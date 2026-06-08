@@ -250,3 +250,61 @@
     </script>
 </body>
 </html>
+    <!-- Vibe Coding 對話練習區 -->
+    <div class="section" style="margin-top: 40px;">
+        <h2>Vibe Coding 對話練習</h2>
+        <p>試著輸入你的需求，AI 會給你對應的 R 程式碼範例：</p>
+        
+        <div id="chat-container" style="background:#1a1714; border:3px solid #4a3f35; padding:16px; margin:20px 0; height:320px; overflow-y:auto; font-size:18px;">
+            <div style="color:#8B0000; margin-bottom:12px;">[赫哥] 你好！我是你的 R Vibe Coding 助手。試著輸入「畫散點圖」、「用顏色區分類別」之類的指令吧。</div>
+        </div>
+        
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="user-input" placeholder="例如：畫一個用顏色區分類別的散點圖" 
+                   style="flex:1; padding:12px; font-family:'VT323', monospace; font-size:20px; background:#fff; border:3px solid #4a3f35;">
+            <button onclick="sendMessage()" 
+                    style="padding:12px 24px; background:#8B0000; color:#f5f0e8; border:3px solid #1a1714; font-family:'Press Start 2P', cursive; font-size:16px; cursor:pointer;">
+                送出
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chat = document.getElementById('chat-container');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            chat.innerHTML += `<div style="margin:8px 0; color:#f5f0e8;"><strong>[你]</strong> ${msg}</div>`;
+            input.value = '';
+
+            let reply = '';
+            if (msg.includes('顏色') || msg.includes('color')) {
+                reply = `ggplot(df, aes(x = x, y = y, color = category)) + geom_point()`;
+            } else if (msg.includes('大小') || msg.includes('size')) {
+                reply = `ggplot(df, aes(x = x, y = y, size = value)) + geom_point()`;
+            } else if (msg.includes('形狀') || msg.includes('shape')) {
+                reply = `ggplot(df, aes(x = x, y = y, shape = category)) + geom_point()`;
+            } else if (msg.includes('散點') || msg.includes('point')) {
+                reply = `ggplot(df, aes(x = x, y = y)) + geom_point(color = "#8B0000")`;
+            } else {
+                reply = `ggplot(df, aes(x = x, y = y)) + geom_point() + labs(title = "視覺通道練習")`;
+            }
+
+            setTimeout(() => {
+                chat.innerHTML += `
+                    <div style="margin:8px 0; color:#f5f0e8;">
+                        <strong>[赫哥]</strong> 以下是對應的 R 程式碼：<br><br>
+                        <code style="background:#fff; color:#1a1714; padding:8px; display:block; white-space:pre;">${reply}</code>
+                    </div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 600);
+        }
+
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
