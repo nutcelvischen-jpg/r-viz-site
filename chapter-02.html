@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02. 報酬率分佈與風險 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --accent: #00ff9d;
+            --border: #333;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            line-height: 1.4;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 2px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent);
+        }
+        
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .nav a:hover { color: var(--accent); }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        
+        .chart-container {
+            background: #111;
+            border: 3px solid #333;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .stock-btn {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            padding: 8px 20px;
+            background: #222;
+            color: var(--text);
+            border: 2px solid #444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .stock-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .stock-btn.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .code-block {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+        
+        .code-block pre {
+            color: #00ff9d;
+        }
+        
+        .explanation {
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+        <div class="nav">
+            <a href="index.html">← 回首頁</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>02. 報酬率分佈與風險</h1>
+        <div class="subtitle">ggplot2 × geom_density • 多檔股票風險比較</div>
+        
+        <div class="chart-container">
+            <div class="controls">
+                <button class="stock-btn active" data-symbol="TSLA">TSLA</button>
+                <button class="stock-btn active" data-symbol="AAPL">AAPL</button>
+                <button class="stock-btn active" data-symbol="NVDA">NVDA</button>
+                <button class="stock-btn" data-symbol="MSFT">MSFT</button>
+            </div>
+            <canvas id="density-chart" width="1100" height="520"></canvas>
+        </div>
+        
+        <div class="explanation">
+            <p>這張圖展示了四檔科技股的<strong>日報酬率分佈</strong>。</p>
+            <p>紅色虛線為平均報酬率，藍色區域為 ±1 標準差區間。</p>
+            <p>在 R 中，這張圖可以用以下程式碼產生：</p>
+        </div>
+        
+        <div class="code-block">
+<pre><code>library(ggplot2)
+library(dplyr)
+
+# 計算日報酬率
+returns &lt;- prices %&gt;%
+  group_by(ticker) %&gt;%
+  mutate(ret = (price_adjusted - lag(price_adjusted)) / lag(price_adjusted)) %&gt;%
+  filter(!is.na(ret))
+
+# 繪製密度圖
+ggplot(returns, aes(x = ret, fill = ticker)) +
+  geom_density(alpha = 0.4, adjust = 1.5) +
+  geom_vline(aes(xintercept = mean(ret)), 
+             linetype = "dashed", color = "red", linewidth = 0.8) +
+  labs(title = "日報酬率分佈比較",
+       x = "日報酬率", y = "密度",
+       fill = "股票代碼") +
+  theme_minimal(base_family = "sans") +
+  scale_fill_manual(values = c("#00ff9d", "#ffaa00", "#ff3366", "#6699ff"))</code></pre>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 模擬報酬率資料（已標準化）
+        const returnData = {
+            TSLA: [-0.042, -0.018, 0.035, 0.068, -0.025, 0.052, 0.078, -0.031, 0.045, 0.062, -0.015, 0.038, 0.055, -0.028, 0.072, 0.041, -0.022, 0.065, 0.033, -0.038, 0.058, 0.025, -0.012, 0.048, 0.071, -0.035, 0.052, 0.039, -0.018, 0.065],
+            AAPL: [-0.022, 0.015, 0.028, -0.012, 0.035, 0.018, -0.008, 0.042, 0.025, -0.015, 0.032, 0.019, -0.005, 0.038, 0.022, -0.018, 0.045, 0.012, -0.008, 0.035, 0.028, -0.012, 0.042, 0.015, -0.005, 0.038, 0.022, -0.015, 0.032, 0.018],
+            NVDA: [-0.055, 0.042, 0.068, -0.032, 0.085, 0.052, -0.025, 0.072, 0.038, -0.018, 0.065, 0.045, -0.028, 0.078, 0.032, -0.015, 0.062, 0.048, -0.022, 0.055, 0.035, -0.012, 0.068, 0.042, -0.018, 0.058, 0.028, -0.008, 0.052, 0.038],
+            MSFT: [-0.018, 0.012, 0.025, -0.008, 0.032, 0.015, -0.005, 0.028, 0.018, -0.012, 0.035, 0.022, -0.008, 0.042, 0.015, -0.005, 0.038, 0.025, -0.012, 0.032, 0.018, -0.008, 0.035, 0.022, -0.005, 0.028, 0.015, -0.012, 0.032, 0.018]
+        };
+        
+        const ctx = document.getElementById('density-chart').getContext('2d');
+        let activeStocks = ['TSLA', 'AAPL', 'NVDA'];
+        
+        function createDensityChart() {
+            const colors = {
+                TSLA: '#00ff9d',
+                AAPL: '#ffaa00',
+                NVDA: '#ff3366',
+                MSFT: '#6699ff'
+            };
+            
+            const datasets = activeStocks.map(symbol => ({
+                label: symbol,
+                data: returnData[symbol],
+                backgroundColor: colors[symbol] + '40',
+                borderColor: colors[symbol],
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }));
+            
+            if (window.densityChart) window.densityChart.destroy();
+            
+            window.densityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 30}, (_, i) => (i - 15) / 100),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1a1a1a',
+                            titleFont: { family: 'VT323', size: 16 },
+                            bodyFont: { family: 'VT323', size: 16 },
+                            borderColor: '#333',
+                            borderWidth: 2
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#222' },
+                            ticks: { color: '#666', font: { family: 'VT323', size: 14 } }
+                        },
+                        y: {
+                            grid: { color: '#222' },
+                            ticks: { color: '#666', font: { family: 'VT323', size: 14 } }
+                        }
+                    }
+                }
+            });
+        }
+        
+        document.querySelectorAll('.stock-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const symbol = btn.dataset.symbol;
+                
+                if (activeStocks.includes(symbol)) {
+                    if (activeStocks.length > 1) {
+                        activeStocks = activeStocks.filter(s => s !== symbol);
+                        btn.classList.remove('active');
+                    }
+                } else {
+                    activeStocks.push(symbol);
+                    btn.classList.add('active');
+                }
+                
+                createDensityChart();
+            });
+        });
+        
+        createDensityChart();
+        
+        document.querySelectorAll('.stock-btn').forEach(btn => {
+            if (activeStocks.includes(btn.dataset.symbol)) {
+                btn.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

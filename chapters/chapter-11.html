@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11. 相關性與多變量視覺化 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        code {
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 2px 8px;
+            font-family: 'VT323', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>11. 相關性與多變量視覺化</h1>
+        
+        <div class="section">
+            <h2>為什麼需要多變量視覺化？</h2>
+            <p>單一變數的分析往往無法看出變數之間的關係。好的多變量視覺化能幫助我們發現：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li>變數之間的相關強度與方向</li>
+                <li>潛在的群集結構</li>
+                <li>異常的觀測值（Anscombe's Quartet）</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了散點圖矩陣 + 相關係數熱圖的經典呈現：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter11_correlation_demo.png" alt="R 相關性視覺化示範" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>互動式相關矩陣</h2>
+            <p>以下為三個變數之間的相關係數（點擊數字可查看說明）：</p>
+            
+            <table style="width:100%; max-width:420px; margin:20px auto; border-collapse:collapse; font-size:18px; text-align:center; border:3px solid #1a1714;">
+                <tr style="background:#1a1714; color:#f5f0e8;">
+                    <th></th>
+                    <th>變數A</th>
+                    <th>變數B</th>
+                    <th>變數C</th>
+                </tr>
+                <tr>
+                    <th style="background:#1a1714; color:#f5f0e8; padding:8px;">變數A</th>
+                    <td style="background:#8B0000; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數A 與自己：相關係數 = 1.00')">1.00</td>
+                    <td style="background:#8B0000; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數A 與變數B：強正相關 (0.85)\n\n表示 A 上升時 B 通常也上升')">0.85</td>
+                    <td style="background:#4a3f35; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數A 與變數C：中度負相關 (-0.32)\n\n表示 A 上升時 C 傾向下降')">−0.32</td>
+                </tr>
+                <tr>
+                    <th style="background:#1a1714; color:#f5f0e8; padding:8px;">變數B</th>
+                    <td style="background:#8B0000; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數B 與變數A：強正相關 (0.85)')">0.85</td>
+                    <td style="background:#8B0000; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數B 與自己：相關係數 = 1.00')">1.00</td>
+                    <td style="background:#c45c5c; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數B 與變數C：弱正相關 (0.12)')">0.12</td>
+                </tr>
+                <tr>
+                    <th style="background:#1a1714; color:#f5f0e8; padding:8px;">變數C</th>
+                    <td style="background:#4a3f35; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數C 與變數A：中度負相關 (-0.32)')">−0.32</td>
+                    <td style="background:#c45c5c; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數C 與變數B：弱正相關 (0.12)')">0.12</td>
+                    <td style="background:#8B0000; color:white; font-weight:bold; cursor:pointer; padding:12px;" onclick="alert('變數C 與自己：相關係數 = 1.00')">1.00</td>
+                </tr>
+            </table>
+            
+            <p style="text-align:center; color:#666; font-size:16px;">顏色越深 = 相關性越強（紅色為正相關，深咖啡為負相關）</p>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 只看相關係數不看散點圖</strong><br>
+                Anscombe's Quartet 告訴我們：四組資料的相關係數相同，但分布完全不同。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 忽略非線性關係</strong><br>
+                Pearson 相關係數只捕捉線性關係。非線性關係（如二次曲線）會被低估。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 過度解讀相關性</strong><br>
+                「相關不等於因果」。必須搭配領域知識與進一步分析。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="margin-left:24px; line-height:2;">
+                <li>使用 <code>GGally::ggpairs()</code> 產生完整的散點圖矩陣。</li>
+                <li>在熱圖上標註 p-value。</li>
+                <li>試著加入第三個變數（顏色或大小）做氣泡圖。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <p>完整 R 程式碼已打包，可直接下載使用：</p>
+            <a href="../assets/chapter11_code.R" download style="display:inline-block; background:#1a1714; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #8B0000; font-family:'Press Start 2P', cursive; margin-top:10px;">
+                下載 chapter11_code.R
+            </a>
+        </div>
+    </div>
+</body>
+</html>

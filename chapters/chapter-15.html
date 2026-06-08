@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15. K 線圖與成交量 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        code {
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 2px 8px;
+            font-family: 'VT323', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>15. K 線圖與成交量</h1>
+        
+        <div class="section">
+            <h2>K 線圖的重要性</h2>
+            <p>K 線圖（Candlestick）是金融市場最經典的視覺化工具，能同時呈現：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li>開盤價、收盤價</li>
+                <li>最高價、最低價</li>
+                <li>價格波動幅度</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>使用 <code>ggplot2</code> + <code>ggcandlestick</code> 繪製專業 K 線圖：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter15_candlestick_demo.png" alt="R K 線圖示範" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 忽略成交量</strong><br>
+                只畫 K 線而不搭配成交量，容易錯過重要的轉折訊號。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 時間軸壓縮</strong><br>
+                當資料跨度很大時，建議加入 zoom 或 facet 功能。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 顏色使用錯誤</strong><br>
+                紅色通常代表下跌，綠色代表上漲（台灣慣例與美股相反）。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="margin-left:24px; line-height:2;">
+                <li>使用 <code>quantmod</code> 或 <code>yfinance</code> 下載台股資料。</li>
+                <li>加入移動平均線（MA5、MA20、MA60）。</li>
+                <li>實作簡單的成交量異常高亮。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter15_code.R" download style="display:inline-block; background:#1a1714; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #8B0000; font-family:'Press Start 2P', cursive; margin-top:10px;">
+                下載 chapter15_code.R
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09. 視覺化倫理與常見陷阱 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>09. 視覺化倫理與常見陷阱</h1>
+        
+        <div class="section">
+            <h2>常見的視覺化問題</h2>
+            
+            <div class="warning">
+                <strong>1. 截斷 y 軸</strong><br>
+                把 y 軸從 0 開始截斷，會誇大差異。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 雙軸圖的誤用</strong><br>
+                兩個不同尺度的 y 軸容易誤導讀者。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 3D 圖表的問題</strong><br>
+                3D 效果會扭曲比例，難以正確判讀。
+            </div>
+            
+            <div class="warning">
+                <strong>4. 過度使用顏色</strong><br>
+                太多顏色會造成視覺疲勞。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了「好圖」和「壞圖」的對比：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter09_ethics_demo.png" alt="R ggplot2 ethics demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="line-height:2.2; margin-left:20px;">
+                <li>找一張你覺得「有倫理問題」的圖，解釋原因。</li>
+                <li>用 R 重現一張「截斷 y 軸」的圖，並解釋為什麼這是問題。</li>
+                <li>設計一個「色盲友善」的配色方案。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter09_code.R" download style="display:inline-block; background:#8B0000; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #1a1714; font-size:18px;">
+                下載 chapter09_code.R
+            </a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>基礎篇已完成！</p>
+            <p style="margin-top:12px;">
+                <a href="../index.html" style="color:#8B0000; text-decoration:none;">返回首頁</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

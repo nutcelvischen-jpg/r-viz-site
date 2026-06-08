@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>00. 為什麼我們需要視覺化？ • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #d4cbc0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            line-height: 1.6;
+            font-size: 20px;
+        }
+        
+        .header {
+            background: #f5f0e8;
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .demo-box {
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #333;
+            font-size: 18px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-left: 4px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+        <div class="nav" style="margin-top:8px;">
+            <a href="../index.html">← 回首頁</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>00. 為什麼我們需要視覺化？</h1>
+        
+        <div class="section">
+            <h2>資料 → 資訊 → 洞見</h2>
+            <p>我們每天面對大量資料，但大腦並不擅長處理數字。</p>
+            <p>視覺化可以把「數字」轉換成「圖像」，讓我們更快看出：</p>
+            <ul style="margin:16px 0 0 20px; line-height:1.8;">
+                <li>趨勢（上升？下降？）</li>
+                <li>異常（哪裡不一樣？）</li>
+                <li>關係（A 和 B 有關嗎？）</li>
+                <li>組成（比例如何？）</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>一個簡單的例子</h2>
+            <p>下面這組數字，你第一眼能看出什麼？</p>
+            
+            <div class="demo-box">
+                2023: 124, 2024: 138, 2025: 167, 2026: 201
+            </div>
+            
+            <p>現在看下面這張圖：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0;">
+                <svg width="600" height="180" style="background:#f5f0e8;">
+                    <!-- 簡單的折線圖 -->
+                    <polyline points="50,140 150,125 250,95 350,50" 
+                              fill="none" stroke="#8B0000" stroke-width="4"/>
+                    <circle cx="50" cy="140" r="6" fill="#8B0000"/>
+                    <circle cx="150" cy="125" r="6" fill="#8B0000"/>
+                    <circle cx="250" cy="95" r="6" fill="#8B0000"/>
+                    <circle cx="350" cy="50" r="6" fill="#8B0000"/>
+                    
+                    <text x="40" y="165" font-family="VT323" font-size="18" fill="#1a1714">2023</text>
+                    <text x="140" y="165" font-family="VT323" font-size="18" fill="#1a1714">2024</text>
+                    <text x="240" y="165" font-family="VT323" font-size="18" fill="#1a1714">2025</text>
+                    <text x="340" y="165" font-family="VT323" font-size="18" fill="#1a1714">2026</text>
+                </svg>
+            </div>
+            
+            <p><span class="highlight">一眼就看出：這是一條明顯上升的趨勢！</span></p>
+        </div>
+        
+        <div class="section">
+            <h2>視覺化能解決的 5 種問題</h2>
+            <ul style="line-height:2.2; margin-left:20px;">
+                <li><strong>比較</strong>：哪個比較大？A 比 B 多多少？</li>
+                <li><strong>趨勢</strong>：隨時間變化如何？上升還是下降？</li>
+                <li><strong>分布</strong>：資料集中在哪裡？有沒有異常值？</li>
+                <li><strong>關係</strong>：兩個變數之間有什麼關聯？</li>
+                <li><strong>組成</strong>：整體由哪些部分構成？比例如何？</li>
+            </ul>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：視覺通道（Visual Channels）</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-01.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

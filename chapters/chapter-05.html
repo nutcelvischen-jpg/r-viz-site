@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05. ggplot2 的三要素 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .code-block {
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 20px;
+            font-size: 16px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .exercise {
+            background: #e8f4e8;
+            border-left: 6px solid #006400;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .download-btn {
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            padding: 12px 28px;
+            background: #8B0000;
+            color: #f5f0e8;
+            border: 3px solid #4a3f35;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        
+        .download-btn:hover {
+            background: #4a3f35;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>05. ggplot2 的三要素</h1>
+        
+        <div class="section">
+            <h2>核心概念：data + aes + geom</h2>
+            <p>ggplot2 的哲學很簡單：<strong>每一張圖都是由三個基本元素組成</strong>。</p>
+            
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li><strong>data</strong>：你要畫的資料（data frame）</li>
+                <li><strong>aes</strong>（aesthetics）：資料如何對應到視覺屬性（x, y, color, size...）</li>
+                <li><strong>geom</strong>：你想用的圖形類型（point, line, bar, boxplot...）</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>詳細拆解</h2>
+            
+            <h3 style="margin-top:20px; color:#8B0000;">1. data（資料）</h3>
+            <p>ggplot2 接受任何 data frame。建議使用 <code>tidyverse</code> 整理乾淨的長格式資料。</p>
+            
+            <div class="code-block">
+                <pre>ggplot(data = gapminder)</pre>
+            </div>
+            
+            <h3 style="margin-top:20px; color:#8B0000;">2. aes（視覺映射）</h3>
+            <p><code>aes()</code> 決定「資料的哪一欄」對應到「圖上的哪個視覺屬性」。</p>
+            
+            <div class="code-block">
+                <pre>aes(x = year, y = lifeExp, color = continent, size = pop)</pre>
+            </div>
+            
+            <p><strong>進階用法：</strong></p>
+            <ul style="margin:8px 0 0 24px;">
+                <li><code>aes(color = ifelse(lifeExp &gt; 70, "high", "low"))</code> — 條件式顏色</li>
+                <li><code>aes(alpha = year)</code> — 透明度隨時間變化</li>
+            </ul>
+            
+            <h3 style="margin-top:20px; color:#8B0000;">3. geom（圖形）</h3>
+            <p>geom 決定你畫的是點、線、柱狀圖還是箱形圖。</p>
+            
+            <div class="code-block">
+                <pre>geom_point() + geom_smooth(method = "lm")</pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>錯誤 1：把 aes 寫在 geom 外面</strong><br>
+                正確：aes 應該寫在 <code>ggplot()</code> 裡面，或寫在每個 geom 裡面。
+            </div>
+            
+            <div class="warning">
+                <strong>錯誤 2：忘記把變數包在 aes() 裡</strong><br>
+                錯誤：<code>geom_point(x = year)</code> → 正確：<code>geom_point(aes(x = year))</code>
+            </div>
+            
+            <div class="warning">
+                <strong>錯誤 3：geom 的順序影響圖層疊加</strong><br>
+                先畫的 geom 會被後畫的蓋住。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            
+            <div class="exercise">
+                <strong>練習 1</strong><br>
+                使用 <code>gapminder</code> 資料，畫出 2007 年各洲平均壽命的柱狀圖。
+            </div>
+            
+            <div class="exercise">
+                <strong>練習 2</strong><br>
+                在練習 1 的基礎上，加入 <code>geom_text()</code> 顯示數值標籤。
+            </div>
+            
+            <div class="exercise">
+                <strong>練習 3</strong><br>
+                使用 <code>aes(color = ifelse(lifeExp &gt; 70, "high", "low"))</code> 畫出散點圖，並自訂顏色。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖是用 R + ggplot2 畫出來的：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter05_ggplot_demo.png" alt="R ggplot2 three elements demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+            
+            <a href="../assets/chapter05_code.R" class="download-btn" download>下載 R 程式碼 (.R)</a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：客製化主題與 pixel 復古風格</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-06.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

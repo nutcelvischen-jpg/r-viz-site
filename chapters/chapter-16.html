@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16. 投資組合視覺化 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>16. 投資組合視覺化</h1>
+        
+        <div class="section">
+            <h2>投資組合視覺化的核心</h2>
+            <p>好的投資組合視覺化能幫助投資人快速理解：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li>資產配置比例</li>
+                <li>風險與報酬的權衡</li>
+                <li>各資產的貢獻度</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>使用 <code>ggplot2</code> + <code>treemap</code> 呈現資產配置：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter16_portfolio_demo.png" alt="R 投資組合示範" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            <div class="warning">
+                <strong>1. 只看權重不看風險</strong><br>
+                權重相同的兩個資產，波動度可能差很多。
+            </div>
+            <div class="warning">
+                <strong>2. 忽略再平衡</strong><br>
+                靜態配置圖無法顯示時間演變，建議加入時間軸動畫。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter16_code.R" download style="display:inline-block; background:#1a1714; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #8B0000; font-family:'Press Start 2P', cursive; margin-top:10px;">
+                下載 chapter16_code.R
+            </a>
+        </div>
+    </div>
+</body>
+</html>

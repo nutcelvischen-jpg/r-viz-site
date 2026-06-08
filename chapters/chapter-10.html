@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10. 時間序列視覺化 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        code {
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 2px 8px;
+            font-family: 'VT323', monospace;
+        }
+        
+        .chart-container {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>10. 時間序列視覺化</h1>
+        
+        <div class="section">
+            <h2>為什麼時間序列很重要？</h2>
+            <p>時間序列資料是資料科學中最常見的資料型態之一。好的時間序列視覺化能幫助我們看出：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li>長期趨勢（Trend）</li>
+                <li>季節性變化（Seasonality）</li>
+                <li>異常值與轉折點</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了時間序列的經典呈現方式（含移動平均線）：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter10_timeseries_demo.png" alt="R 時間序列示範" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>互動式時間序列（含播放按鈕）</h2>
+            <p>使用 Chart.js 實作可播放的時間軸：</p>
+            
+            <div class="chart-container">
+                <canvas id="timeSeriesChart" width="800" height="400"></canvas>
+                <div style="text-align:center; margin-top:16px;">
+                    <button id="playBtn" onclick="togglePlay()" style="font-family:'Press Start 2P', cursive; font-size:16px; padding:10px 24px; background:#8B0000; color:#f5f0e8; border:3px solid #1a1714; cursor:pointer;">▶ 播放</button>
+                    <button onclick="resetChart()" style="font-family:'Press Start 2P', cursive; font-size:16px; padding:10px 24px; background:#fff; color:#1a1714; border:3px solid #1a1714; cursor:pointer;">重置</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 日期格式錯誤</strong><br>
+                直接用字串排序日期，會導致 2023-10 出現在 2023-2 之前。務必使用 <code>as.Date()</code> 或 <code>lubridate</code>。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 移動平均視窗過小</strong><br>
+                窗口太小會讓趨勢線過於抖動，失去平滑效果。建議至少使用 7 或 30 天。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 忽略季節性</strong><br>
+                很多時間序列有明顯的週期性（如每月、每季），直接畫原始值會被季節性掩蓋。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="margin-left:24px; line-height:2;">
+                <li>使用 <code>AirPassengers</code> 資料集，畫出 12 個月移動平均線。</li>
+                <li>加入 <code>geom_ribbon()</code> 顯示 95% 信賴區間。</li>
+                <li>試著用 <code>facet_wrap(~ month)</code> 觀察不同月份的模式。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <p>完整 R 程式碼已打包，可直接下載使用：</p>
+            <a href="../assets/chapter10_code.R" download style="display:inline-block; background:#1a1714; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #8B0000; font-family:'Press Start 2P', cursive; margin-top:10px;">
+                下載 chapter10_code.R
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // 時間序列互動圖
+        let chart;
+        let animationInterval;
+        let currentIndex = 0;
+        
+        const labels = ['2023-01', '2023-02', '2023-03', '2023-04', '2023-05', '2023-06', 
+                       '2023-07', '2023-08', '2023-09', '2023-10', '2023-11', '2023-12',
+                       '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'];
+        
+        const data = [120, 132, 145, 138, 160, 178, 195, 210, 188, 175, 162, 148,
+                     135, 142, 158, 172, 189, 205];
+        
+        function createChart() {
+            const ctx = document.getElementById('timeSeriesChart');
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '原始數值',
+                        data: data,
+                        borderColor: '#8B0000',
+                        backgroundColor: 'rgba(139, 0, 0, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        pointRadius: 0
+                    }, {
+                        label: '30天移動平均',
+                        data: data.map((v, i) => {
+                            if (i < 2) return v;
+                            return Math.round((data[i-2] + data[i-1] + v) / 3);
+                        }),
+                        borderColor: '#1a1714',
+                        borderWidth: 2,
+                        borderDash: [5, 3],
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'top' },
+                        title: { display: true, text: '月營收時間序列（含移動平均）', font: { size: 18 } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#ddd' } },
+                        x: { grid: { color: '#eee' } }
+                    }
+                }
+            });
+        }
+        
+        function togglePlay() {
+            const btn = document.getElementById('playBtn');
+            
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+                btn.textContent = '▶ 播放';
+            } else {
+                btn.textContent = '⏸ 暫停';
+                animationInterval = setInterval(() => {
+                    if (currentIndex >= labels.length) {
+                        clearInterval(animationInterval);
+                        animationInterval = null;
+                        btn.textContent = '▶ 播放';
+                        return;
+                    }
+                    
+                    // 逐步顯示資料點
+                    chart.data.datasets[0].pointRadius = Array(labels.length).fill(0);
+                    chart.data.datasets[0].pointRadius[currentIndex] = 5;
+                    
+                    chart.update();
+                    currentIndex++;
+                }, 300);
+            }
+        }
+        
+        function resetChart() {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
+            currentIndex = 0;
+            document.getElementById('playBtn').textContent = '▶ 播放';
+            
+            if (chart) {
+                chart.data.datasets[0].pointRadius = Array(labels.length).fill(0);
+                chart.update();
+            }
+        }
+        
+        // 初始化
+        window.onload = function() {
+            createChart();
+        };
+    </script>
+</body>
+</html>

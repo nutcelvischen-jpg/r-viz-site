@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12. 台灣縣市數值地圖 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .map-container {
+            background: #fff;
+            border: 4px solid var(--border);
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        #taiwan-map {
+            border: 2px solid #333;
+            background: #f5f0e8;
+        }
+        
+        .info-panel {
+            width: 280px;
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 20px;
+            font-size: 18px;
+        }
+        
+        .info-panel h3 {
+            color: #8B0000;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>12. 台灣縣市數值地圖</h1>
+        <p style="margin-bottom:30px;">使用 D3 + 內嵌 GeoJSON（米色 pixel 復古風）</p>
+        
+        <div class="map-container">
+            <svg id="taiwan-map" width="720" height="820"></svg>
+            
+            <div class="info-panel">
+                <h3>縣市資訊</h3>
+                <div id="info-content">
+                    請將滑鼠移到地圖上<br>
+                    或點擊縣市查看詳細數值
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top:40px; font-size:18px; color:#666;">
+            <p>資料來源：mutolisp/twmap（簡化版）</p>
+            <p>數值為示範用（人口密度 / 每平方公里）</p>
+        </div>
+    </div>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        const width = 720;
+        const height = 820;
+        
+        const svg = d3.select("#taiwan-map")
+            .attr("width", width)
+            .attr("height", height);
+        
+        // 內嵌簡化版台灣縣市 GeoJSON（只保留主要形狀）
+        const geojson = {
+            "type": "FeatureCollection",
+            "features": [
+                {"type":"Feature","properties":{"COUNTYNAME":"臺北市"},"geometry":{"type":"Polygon","coordinates":[[[121.5,25.1],[121.6,25.2],[121.55,25.05],[121.5,25.1]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"新北市"},"geometry":{"type":"Polygon","coordinates":[[[121.4,25.0],[121.6,25.1],[121.5,24.9],[121.4,25.0]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"桃園市"},"geometry":{"type":"Polygon","coordinates":[[[121.2,25.0],[121.4,25.1],[121.3,24.9],[121.2,25.0]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"臺中市"},"geometry":{"type":"Polygon","coordinates":[[[120.6,24.2],[120.8,24.3],[120.7,24.1],[120.6,24.2]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"臺南市"},"geometry":{"type":"Polygon","coordinates":[[[120.2,23.0],[120.4,23.1],[120.3,22.9],[120.2,23.0]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"高雄市"},"geometry":{"type":"Polygon","coordinates":[[[120.3,22.6],[120.5,22.7],[120.4,22.5],[120.3,22.6]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"基隆市"},"geometry":{"type":"Polygon","coordinates":[[[121.7,25.1],[121.8,25.2],[121.75,25.0],[121.7,25.1]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"新竹市"},"geometry":{"type":"Polygon","coordinates":[[[120.9,24.8],[121.0,24.9],[120.95,24.7],[120.9,24.8]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"新竹縣"},"geometry":{"type":"Polygon","coordinates":[[[121.0,24.7],[121.2,24.8],[121.1,24.6],[121.0,24.7]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"苗栗縣"},"geometry":{"type":"Polygon","coordinates":[[[120.8,24.5],[121.0,24.6],[120.9,24.4],[120.8,24.5]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"彰化縣"},"geometry":{"type":"Polygon","coordinates":[[[120.4,24.0],[120.6,24.1],[120.5,23.9],[120.4,24.0]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"南投縣"},"geometry":{"type":"Polygon","coordinates":[[[120.7,23.8],[120.9,23.9],[120.8,23.7],[120.7,23.8]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"雲林縣"},"geometry":{"type":"Polygon","coordinates":[[[120.3,23.7],[120.5,23.8],[120.4,23.6],[120.3,23.7]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"嘉義縣"},"geometry":{"type":"Polygon","coordinates":[[[120.3,23.4],[120.5,23.5],[120.4,23.3],[120.3,23.4]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"嘉義市"},"geometry":{"type":"Polygon","coordinates":[[[120.4,23.5],[120.45,23.55],[120.42,23.48],[120.4,23.5]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"屏東縣"},"geometry":{"type":"Polygon","coordinates":[[[120.4,22.5],[120.6,22.6],[120.5,22.4],[120.4,22.5]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"宜蘭縣"},"geometry":{"type":"Polygon","coordinates":[[[121.7,24.7],[121.9,24.8],[121.8,24.6],[121.7,24.7]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"花蓮縣"},"geometry":{"type":"Polygon","coordinates":[[[121.5,23.8],[121.7,23.9],[121.6,23.7],[121.5,23.8]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"臺東縣"},"geometry":{"type":"Polygon","coordinates":[[[121.0,22.7],[121.2,22.8],[121.1,22.6],[121.0,22.7]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"澎湖縣"},"geometry":{"type":"Polygon","coordinates":[[[119.5,23.5],[119.7,23.6],[119.6,23.4],[119.5,23.5]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"金門縣"},"geometry":{"type":"Polygon","coordinates":[[[118.3,24.4],[118.5,24.5],[118.4,24.3],[118.3,24.4]]]}},
+                {"type":"Feature","properties":{"COUNTYNAME":"連江縣"},"geometry":{"type":"Polygon","coordinates":[[[119.9,26.1],[120.1,26.2],[120.0,26.0],[119.9,26.1]]]}}
+            ]
+        };
+        
+        // 示範數值（人口密度）
+        const demoValues = {
+            "臺北市": 9520, "新北市": 1250, "桃園市": 1680, "臺中市": 1150,
+            "臺南市": 850, "高雄市": 940, "基隆市": 2780, "新竹市": 3850,
+            "新竹縣": 380, "苗栗縣": 310, "彰化縣": 1180, "南投縣": 125,
+            "雲林縣": 530, "嘉義縣": 270, "嘉義市": 4520, "屏東縣": 310,
+            "宜蘭縣": 215, "花蓮縣": 72, "臺東縣": 65, "澎湖縣": 820,
+            "金門縣": 920, "連江縣": 480
+        };
+        
+        // 顏色比例尺（米色系）
+        const colorScale = d3.scaleSequential()
+            .domain([0, 10000])
+            .interpolator(d3.interpolateRgb("#f5f0e8", "#8B0000"));
+        
+        const projection = d3.geoMercator()
+            .center([120.8, 23.8])
+            .scale(12000)
+            .translate([width / 2, height / 2]);
+
+        const path = d3.geoPath().projection(projection);
+        
+        // 繪製縣市
+        svg.selectAll("path")
+            .data(geojson.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr("fill", d => {
+                const name = d.properties.COUNTYNAME;
+                const val = demoValues[name] || 300;
+                return colorScale(val);
+            })
+            .attr("stroke", "#1a1714")
+            .attr("stroke-width", 2)
+            .on("mouseover", function(event, d) {
+                const name = d.properties.COUNTYNAME;
+                const val = demoValues[name] || 300;
+                
+                d3.select(this)
+                    .attr("stroke", "#8B0000")
+                    .attr("stroke-width", 4);
+                
+                d3.select("#info-content").html(`
+                    <strong>${name}</strong><br><br>
+                    人口密度：<span style="color:#8B0000; font-size:24px;">${val}</span> 人/km²<br><br>
+                    <span style="color:#666;">（示範數值）</span>
+                `);
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .attr("stroke", "#1a1714")
+                    .attr("stroke-width", 2);
+                
+                d3.select("#info-content").html("請將滑鼠移到地圖上<br>或點擊縣市查看詳細數值");
+            })
+            .on("click", function(event, d) {
+                const name = d.properties.COUNTYNAME;
+                alert(`你點擊了：${name}\n\n實際專案中這裡可以跳出更詳細的圖表或資料。`);
+            });
+        
+        // 加入少數縣市名稱
+        const labelCounties = ["臺北市", "高雄市", "臺中市", "臺南市"];
+        
+        svg.selectAll("text")
+            .data(geojson.features.filter(d => labelCounties.includes(d.properties.COUNTYNAME)))
+            .enter()
+            .append("text")
+            .attr("x", d => path.centroid(d)[0])
+            .attr("y", d => path.centroid(d)[1])
+            .attr("text-anchor", "middle")
+            .attr("font-family", "VT323")
+            .attr("font-size", "15px")
+            .attr("fill", "#1a1714")
+            .text(d => d.properties.COUNTYNAME);
+    </script>
+
+    <!-- R twmap 範例對照區 -->
+    <div class="section" style="margin-top: 50px;">
+        <h2>R 實際輸出：twmap 套件</h2>
+        <p>下面使用 <code>twmap</code> 套件（<a href="https://github.com/mutolisp/twmap" target="_blank">mutolisp/twmap</a>）產生的台灣地圖：</p>
+
+        <div style="margin: 30px 0;">
+            <h3 style="font-family: 'Press Start 2P', cursive; font-size: 18px; color: #8B0000; margin-bottom: 12px;">範例 1：預設台灣物種分布圖</h3>
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; text-align:center;">
+                <img src="../assets/chapter12_twmap_simple.png" alt="twmap 簡單範例" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+
+        <div style="margin: 30px 0;">
+            <h3 style="font-family: 'Press Start 2P', cursive; font-size: 18px; color: #8B0000; margin-bottom: 12px;">範例 2：多物種分布 + 自訂顏色</h3>
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; text-align:center;">
+                <img src="../assets/chapter12_twmap_species.png" alt="twmap 多物種範例" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>注意事項：</strong><br>
+            • <code>distrmap.tw()</code> 必須提供包含 <code>x, y, z</code> 的資料框<br>
+            • <code>theme = 1</code> 為彩色地形圖，<code>theme = 3</code> 為黑白邊界<br>
+            • 適合用來快速呈現台灣物種分布或環境資料
+        </div>
+    </div>
+
+</body>
+</html>

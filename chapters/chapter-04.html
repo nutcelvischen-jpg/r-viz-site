@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04. 構圖、留白、標註與註解 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>04. 構圖、留白、標註與註解</h1>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 缺少標題或單位</strong><br>
+                讀者不知道圖表在講什麼，或不知道數值的單位。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 過度裝飾</strong><br>
+                太多陰影、3D 效果、裝飾線條，會分散讀者注意力。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 資訊過載</strong><br>
+                一個圖表塞太多資訊，讀者無法快速抓住重點。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了「好圖」和「壞圖」的對比：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter04_composition_demo.png" alt="R ggplot2 composition demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="line-height:2.2; margin-left:20px;">
+                <li>找一張你覺得「構圖不佳」的圖，解釋原因並提出改進建議。</li>
+                <li>用 <code>labs()</code> 和 <code>theme()</code> 為一張圖加上標題、單位、來源。</li>
+                <li>設計一個「資訊密度適中」的圖表，解釋你的設計選擇。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter04_code.R" download style="display:inline-block; background:#8B0000; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #1a1714; font-size:18px;">
+                下載 chapter04_code.R
+            </a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：ggplot2 的三要素</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-05.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

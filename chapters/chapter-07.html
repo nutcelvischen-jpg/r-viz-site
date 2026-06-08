@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07. 多圖層與統計轉換 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>07. 多圖層與統計轉換</h1>
+        
+        <div class="section">
+            <h2>geom 的疊加順序</h2>
+            <p>在 ggplot2 中，geom 的疊加順序很重要：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li>先畫的 geom 會在下面</li>
+                <li>後畫的 geom 會覆蓋在上面</li>
+                <li>建議先畫「背景層」，再畫「資料層」，最後畫「註解層」</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了多圖層疊加的技巧：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter07_layer_demo.png" alt="R ggplot2 layer demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. geom 的順序錯誤</strong><br>
+                先畫資料再畫背景，會造成背景蓋住資料。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 忽略 alpha 透明度</strong><br>
+                多個 geom 疊加時，建議調整 alpha 避免遮擋。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 統計轉換與原始資料混淆</strong><br>
+                <code>stat_summary()</code> 會產生新的資料，需注意與原始資料的對應關係。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="line-height:2.2; margin-left:20px;">
+                <li>用 <code>geom_line()</code> + <code>geom_point()</code> + <code>geom_smooth()</code> 畫一張多圖層圖表。</li>
+                <li>用 <code>stat_summary()</code> 計算每個類別的平均值並畫出來。</li>
+                <li>設計一個「背景層 + 資料層 + 註解層」的三層圖表。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter07_code.R" download style="display:inline-block; background:#8B0000; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #1a1714; font-size:18px;">
+                下載 chapter07_code.R
+            </a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：分面與多圖排版</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-08.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

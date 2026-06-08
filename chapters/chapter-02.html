@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02. 資料類型與圖表選擇 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>02. 資料類型與圖表選擇</h1>
+        
+        <div class="section">
+            <h2>資料類型</h2>
+            <p>資料主要有四種類型：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li><strong>類別資料</strong>（categorical）：國家、性別、產品類型</li>
+                <li><strong>連續資料</strong>（continuous）：身高、體重、溫度</li>
+                <li><strong>時間資料</strong>（temporal）：日期、時間、年份</li>
+                <li><strong>地理資料</strong>（spatial）：經緯度、行政區</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了四種常見圖表類型：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter02_chart_types.png" alt="R ggplot2 chart types demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 用折線圖呈現類別資料</strong><br>
+                折線圖適合呈現「時間序列」，用在類別資料會誤導讀者以為有順序關係。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 用圓餅圖呈現太多類別</strong><br>
+                圓餅圖最多適合 5 個類別，超過會造成讀者無法判讀。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 忽略時間資料的順序</strong><br>
+                時間資料應該用折線圖或時間軸呈現，而不是用散點圖隨意排列。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="line-height:2.2; margin-left:20px;">
+                <li>給定一組「產品類別 + 銷售額」的資料，選擇最適合的圖表類型並解釋原因。</li>
+                <li>找一張你覺得「圖表類型選擇不當」的圖，解釋原因並提出改進建議。</li>
+                <li>用 <code>geom_col()</code> 和 <code>geom_point()</code> 分別畫同一組資料，比較差異。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter02_code.R" download style="display:inline-block; background:#8B0000; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #1a1714; font-size:18px;">
+                下載 chapter02_code.R
+            </a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：顏色理論與 pixel 復古配色</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-03.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

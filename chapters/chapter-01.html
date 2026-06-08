@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01. 視覺通道 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .channel-btn {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            padding: 10px 22px;
+            background: #fff;
+            color: var(--text);
+            border: 3px solid var(--border);
+            cursor: pointer;
+            margin: 6px;
+        }
+        
+        .channel-btn.active {
+            background: var(--accent);
+            color: #f5f0e8;
+            border-color: var(--accent);
+        }
+        
+        .demo-area {
+            background: #1a1714;
+            padding: 30px;
+            margin: 20px 0;
+            border: 3px solid #333;
+            min-height: 220px;
+            position: relative;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>01. 視覺通道（Visual Channels）</h1>
+        
+        <div class="section">
+            <h2>什麼是視覺通道？</h2>
+            <p>視覺通道就是「用來呈現資料的視覺屬性」。</p>
+            <p>常見的視覺通道有：位置、大小、顏色、形狀、方向、透明度。</p>
+        </div>
+        
+        <div class="section">
+            <h2>互動示範</h2>
+            <p>點擊不同視覺通道來看呈現效果：</p>
+            
+            <div style="margin:20px 0;">
+                <button class="channel-btn active" onclick="showChannel('position')">位置</button>
+                <button class="channel-btn" onclick="showChannel('size')">大小</button>
+                <button class="channel-btn" onclick="showChannel('color')">顏色</button>
+                <button class="channel-btn" onclick="showChannel('shape')">形狀</button>
+            </div>
+            
+            <div class="demo-area" id="demo-area">
+                <!-- JS 動態生成 -->
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖是用 R + ggplot2 畫出來的視覺通道示範：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter01_channel_demo.png" alt="R ggplot2 visual channels demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 使用太多視覺通道</strong><br>
+                一次使用 5 種以上視覺通道會造成讀者混淆。建議最多使用 3 種。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 使用不準確的通道呈現重要資料</strong><br>
+                重要資料應該用「位置」或「長度」呈現，而不是用「顏色飽和度」或「形狀」。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 忽略通道之間的衝突</strong><br>
+                例如同時用「大小」和「顏色」呈現同一個變數，會造成視覺混亂。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="line-height:2.2; margin-left:20px;">
+                <li>用 <code>geom_point()</code> 畫散點圖，試著用不同視覺通道呈現「類別」變數。</li>
+                <li>找出一個你覺得「視覺通道使用不當」的圖表，解釋原因。</li>
+                <li>設計一個圖表，使用「位置 + 顏色 + 大小」三種通道呈現三個不同變數。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter01_code.R" download style="display:inline-block; background:#8B0000; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #1a1714; font-size:18px;">
+                下載 chapter01_code.R
+            </a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：資料類型與圖表選擇</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-02.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        const data = [
+            {name: '台灣', value: 2350},
+            {name: '日本', value: 12400},
+            {name: '美國', value: 33300},
+            {name: '印度', value: 14200},
+            {name: '巴西', value: 2150}
+        ];
+        
+        function showChannel(type) {
+            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const area = document.getElementById('demo-area');
+            area.innerHTML = '';
+            
+            if (type === 'position') {
+                data.forEach((d, i) => {
+                    const bar = document.createElement('div');
+                    bar.style.cssText = `width:${d.value/100}px; height:22px; background:#f5f0e8; margin:8px 0; position:relative;`;
+                    bar.innerHTML = `<span style="position:absolute; left:10px; color:#1a1714; font-size:16px;">${d.name}</span>`;
+                    area.appendChild(bar);
+                });
+            } else if (type === 'size') {
+                data.forEach((d, i) => {
+                    const circle = document.createElement('div');
+                    const size = Math.sqrt(d.value) * 1.2;
+                    circle.style.cssText = `width:${size}px; height:${size}px; background:#f5f0e8; border-radius:50%; display:inline-block; margin:10px; vertical-align:middle;`;
+                    area.appendChild(circle);
+                });
+            } else if (type === 'color') {
+                data.forEach((d, i) => {
+                    const bar = document.createElement('div');
+                    const hue = 200 + (d.value / 333) * 60;
+                    bar.style.cssText = `width:200px; height:22px; background:hsl(${hue},70%,50%); margin:8px 0;`;
+                    bar.innerHTML = `<span style="padding-left:10px; color:white; font-size:16px;">${d.name}</span>`;
+                    area.appendChild(bar);
+                });
+            } else if (type === 'shape') {
+                const shapes = ['circle', 'square', 'triangle'];
+                data.forEach((d, i) => {
+                    const shape = document.createElement('div');
+                    const shapeType = shapes[i % 3];
+                    if (shapeType === 'circle') {
+                        shape.style.cssText = `width:40px; height:40px; background:#f5f0e8; border-radius:50%; display:inline-block; margin:10px;`;
+                    } else if (shapeType === 'square') {
+                        shape.style.cssText = `width:40px; height:40px; background:#f5f0e8; display:inline-block; margin:10px;`;
+                    } else {
+                        shape.style.cssText = `width:0; height:0; border-left:20px solid transparent; border-right:20px solid transparent; border-bottom:40px solid #f5f0e8; display:inline-block; margin:10px;`;
+                    }
+                    area.appendChild(shape);
+                });
+            }
+        }
+        
+        window.onload = function() {
+            const area = document.getElementById('demo-area');
+            data.forEach((d, i) => {
+                const bar = document.createElement('div');
+                bar.style.cssText = `width:${d.value/100}px; height:22px; background:#f5f0e8; margin:8px 0; position:relative;`;
+                bar.innerHTML = `<span style="position:absolute; left:10px; color:#1a1714; font-size:16px;">${d.name}</span>`;
+                area.appendChild(bar);
+            });
+        }
+    </script>
+</body>
+</html>

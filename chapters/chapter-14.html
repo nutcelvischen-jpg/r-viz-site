@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14. 文字視覺化與詞雲 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        code {
+            background: #1a1714;
+            color: #f5f0e8;
+            padding: 2px 8px;
+            font-family: 'VT323', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>14. 文字視覺化與詞雲</h1>
+        
+        <div class="section">
+            <h2>為什麼需要文字視覺化？</h2>
+            <p>在社群媒體、問卷、評論等非結構化資料越來越多的時代，文字視覺化能幫助我們快速掌握：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li>關鍵字出現頻率與重要性</li>
+                <li>情緒傾向（正面 / 負面）</li>
+                <li>主題分布與演變</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>使用 <code>wordcloud2</code> 套件產生的詞雲：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter14_wordcloud_demo.png" alt="R 詞雲示範" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 忽略停用詞（Stop Words）</strong><br>
+                直接把所有文字丟進詞雲，會讓「的」、「是」、「在」等無意義詞彙佔據畫面。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 字型大小只看頻率</strong><br>
+                建議結合 TF-IDF 或關鍵字權重，避免常見詞彙主導視覺效果。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 顏色選擇不當</strong><br>
+                隨機顏色容易造成視覺疲勞。建議使用有意義的配色（如正面綠色、負面紅色）。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="margin-left:24px; line-height:2;">
+                <li>使用 <code>jiebaR</code> 對中文文章進行斷詞。</li>
+                <li>加入情緒詞典，產生正面 / 負面詞雲。</li>
+                <li>試著用 <code>ggwordcloud</code> 產生 ggplot2 風格詞雲。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <p>完整 R 程式碼已打包，可直接下載使用：</p>
+            <a href="../assets/chapter14_code.R" download style="display:inline-block; background:#1a1714; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #8B0000; font-family:'Press Start 2P', cursive; margin-top:10px;">
+                下載 chapter14_code.R
+            </a>
+        </div>
+    </div>
+</body>
+</html>

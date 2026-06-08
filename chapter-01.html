@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01. 股價走勢與時間序列 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --accent: #00ff9d;
+            --border: #333;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            line-height: 1.4;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 2px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent);
+        }
+        
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .nav a:hover { color: var(--accent); }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        
+        .chart-container {
+            background: #111;
+            border: 3px solid #333;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .stock-btn {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            padding: 8px 20px;
+            background: #222;
+            color: var(--text);
+            border: 2px solid #444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .stock-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .stock-btn.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .code-block {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+        
+        .code-block pre {
+            color: #00ff9d;
+        }
+        
+        .explanation {
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+        <div class="nav">
+            <a href="index.html">← 回首頁</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>01. 股價走勢與時間序列</h1>
+        <div class="subtitle">ggplot2 × yfinance • 互動式多檔股票比較</div>
+        
+        <div class="chart-container">
+            <div class="controls">
+                <button class="stock-btn active" data-symbol="TSLA">TSLA</button>
+                <button class="stock-btn active" data-symbol="AAPL">AAPL</button>
+                <button class="stock-btn active" data-symbol="NVDA">NVDA</button>
+                <button class="stock-btn" data-symbol="MSFT">MSFT</button>
+            </div>
+            <canvas id="price-chart" width="1100" height="520"></canvas>
+        </div>
+        
+        <div class="explanation">
+            <p>這張圖展示了 2025 年 1 月至 6 月四檔科技股的收盤價走勢。</p>
+            <p>你可以點擊按鈕來顯示/隱藏特定股票，觀察它們之間的相對強弱。</p>
+            <p>在 R 中，這張圖可以用以下程式碼產生：</p>
+        </div>
+        
+        <div class="code-block">
+<pre><code>library(ggplot2)
+library(yfR)          # 或 quantmod / tidyquant
+
+# 抓取資料
+tickers &lt;- c("TSLA", "AAPL", "NVDA", "MSFT")
+prices &lt;- yf_get(tickers, 
+                 first_date = "2025-01-01",
+                 last_date  = "2025-06-08")
+
+# 繪圖
+ggplot(prices, aes(x = date, y = price_adjusted, color = ticker)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c("#00ff9d", "#ffaa00", "#ff3366", "#6699ff")) +
+  labs(title = "股價走勢比較",
+       x = "日期", y = "調整後收盤價",
+       color = "股票代碼") +
+  theme_minimal(base_family = "sans") +
+  theme(plot.title = element_text(size = 16, face = "bold"))</code></pre>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 模擬股價資料（實際應該從 API 抓）
+        const stockData = {
+            TSLA: [248, 252, 261, 278, 292, 315, 338, 352, 341, 367, 389, 412, 398, 423, 441, 467, 452, 478, 501, 489, 523, 548, 571, 592, 578, 612, 645, 668, 651, 689],
+            AAPL: [178, 182, 189, 195, 203, 211, 218, 225, 219, 232, 241, 248, 239, 255, 268, 275, 269, 282, 295, 288, 302, 315, 328, 341, 332, 348, 362, 375, 368, 385],
+            NVDA: [135, 142, 158, 172, 189, 205, 228, 245, 238, 262, 285, 312, 298, 335, 358, 385, 372, 402, 428, 415, 452, 485, 512, 538, 525, 562, 598, 625, 612, 658],
+            MSFT: [378, 385, 392, 401, 415, 428, 442, 455, 448, 468, 482, 498, 485, 512, 528, 545, 532, 558, 575, 562, 592, 615, 638, 662, 648, 682, 708, 735, 722, 758]
+        };
+        
+        const labels = Array.from({length: 30}, (_, i) => `2025-${String(Math.floor(i/5)+1).padStart(2,'0')}-${String((i%5)*6+1).padStart(2,'0')}`);
+        
+        const ctx = document.getElementById('price-chart').getContext('2d');
+        
+        let activeStocks = ['TSLA', 'AAPL', 'NVDA'];
+        
+        function createChart() {
+            const datasets = activeStocks.map((symbol, idx) => ({
+                label: symbol,
+                data: stockData[symbol],
+                borderColor: ['#00ff9d', '#ffaa00', '#ff3366', '#6699ff'][idx],
+                borderWidth: 2.5,
+                tension: 0.3,
+                pointRadius: 0,
+                pointHoverRadius: 5
+            }));
+            
+            if (window.priceChart) window.priceChart.destroy();
+            
+            window.priceChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1a1a1a',
+                            titleFont: { family: 'VT323', size: 16 },
+                            bodyFont: { family: 'VT323', size: 16 },
+                            borderColor: '#333',
+                            borderWidth: 2
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#222' },
+                            ticks: { color: '#666', font: { family: 'VT323', size: 14 } }
+                        },
+                        y: {
+                            grid: { color: '#222' },
+                            ticks: { color: '#666', font: { family: 'VT323', size: 14 } }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+        
+        // 按鈕控制
+        document.querySelectorAll('.stock-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const symbol = btn.dataset.symbol;
+                
+                if (activeStocks.includes(symbol)) {
+                    if (activeStocks.length > 1) {
+                        activeStocks = activeStocks.filter(s => s !== symbol);
+                        btn.classList.remove('active');
+                    }
+                } else {
+                    activeStocks.push(symbol);
+                    btn.classList.add('active');
+                }
+                
+                createChart();
+            });
+        });
+        
+        // 初始化
+        createChart();
+        
+        // 初始按鈕狀態
+        document.querySelectorAll('.stock-btn').forEach(btn => {
+            if (activeStocks.includes(btn.dataset.symbol)) {
+                btn.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

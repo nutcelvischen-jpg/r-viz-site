@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R Vibe Coding • ggplot2 × yfinance</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --accent-alt: #006400;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--text);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .nav a:hover { color: var(--accent); }
+        
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 620px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid var(--border);
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(74, 63, 53, 0.05) 2px,
+                rgba(74, 63, 53, 0.05) 4px
+            );
+        }
+        
+        #ai-canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            pointer-events: none;
+        }
+        
+        .hero h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 42px;
+            color: var(--accent);
+            text-shadow: 4px 4px 0px var(--border);
+            margin-bottom: 12px;
+        }
+        
+        .hero p {
+            font-size: 22px;
+            color: var(--border);
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--accent-alt);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        
+        .chapter-card {
+            background: #ebe3d5;
+            border: 3px solid var(--border);
+            padding: 24px;
+            transition: all 0.2s;
+            box-shadow: 4px 4px 0px var(--border);
+        }
+        
+        .chapter-card:hover {
+            border-color: var(--accent);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--border);
+        }
+        
+        .chapter-card h3 {
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        
+        .chapter-card p {
+            font-size: 18px;
+            color: var(--border);
+            line-height: 1.5;
+        }
+        
+        #about p {
+            color: var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+        <div class="nav">
+            <a href="#chapters">章節</a>
+            <a href="#about">關於</a>
+        </div>
+    </div>
+    
+    <div class="hero">
+        <canvas id="ai-canvas" width="680" height="491"></canvas>
+        
+        <div class="hero-content">
+            <h1>AI × R</h1>
+            <p>ggplot2 • yfinance • pixel dark tech</p>
+        </div>
+    </div>
+    
+    <div id="chapters" class="section">
+        <h2>CHAPTERS</h2>
+        
+        <div class="chapter-grid">
+            <a href="chapter-01.html" style="text-decoration: none; color: inherit;">
+                <div class="chapter-card">
+                    <h3>01. 股價走勢與時間序列</h3>
+                    <p>多檔股票走勢比較<br>geom_line + 互動切換</p>
+                </div>
+            </a>
+            
+            <div class="chapter-card">
+                <h3>02. 報酬率分佈與風險</h3>
+                <p>geom_histogram + density<br>風險視覺化</p>
+            </div>
+            
+            <div class="chapter-card">
+                <h3>03. K線圖與技術指標</h3>
+                <p>geom_candlestick<br>RSI / MACD / Bollinger</p>
+            </div>
+            
+            <div class="chapter-card">
+                <h3>04. 投資組合視覺化</h3>
+                <p>效率前緣 + 配置<br>互動權重調整</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="about" class="section">
+        <h2>關於這個網站</h2>
+        <p style="text-align: center; font-size: 20px; max-width: 700px; margin: 0 auto; color: #aaa;">
+            這是一個用純 HTML + GSAP + Canvas 打造的 R 金融視覺化教學網站。<br>
+            所有圖表皆以 ggplot2 精神重新實作，並加入 pixel dark tech 風格的互動效果。
+        </p>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('ai-canvas');
+        const ctx = canvas.getContext('2d');
+        const WIDTH = 680;
+        const HEIGHT = 491;
+        
+        const R_SYMBOLS = ['ggplot', 'geom_line', 'aes', 'mutate', 'tidyverse', 'yfinance', 'scale_color', 'facet_wrap', 'summarise', 'R 4.4'];
+        let matrixDrops = [];
+        
+        function initMatrix() {
+            matrixDrops = [];
+            const cols = Math.floor(WIDTH / 11);
+            
+            for (let i = 0; i < cols; i++) {
+                matrixDrops.push({
+                    x: i * 11 + 5,
+                    y: Math.random() * HEIGHT,
+                    speed: 0.9 + Math.random() * 1.4,
+                    symbol: R_SYMBOLS[Math.floor(Math.random() * R_SYMBOLS.length)],
+                    alpha: 0.22 + Math.random() * 0.28
+                });
+            }
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(245, 240, 232, 0.15)';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+            
+            ctx.font = '13px VT323';
+            
+            for (let drop of matrixDrops) {
+                ctx.fillStyle = `rgba(0, 100, 0, ${drop.alpha + 0.2})`;
+                ctx.fillText(drop.symbol, drop.x, drop.y);
+                
+                drop.y += drop.speed;
+                
+                if (drop.y > HEIGHT) {
+                    drop.y = 0;
+                    drop.symbol = R_SYMBOLS[Math.floor(Math.random() * R_SYMBOLS.length)];
+                }
+            }
+        }
+
+        // ============================================
+        // Pixel UFO System
+        // ============================================
+        class PixelUFO {
+            constructor() {
+                this.x = WIDTH / 2;
+                this.y = 80;
+                this.vx = 1.2;
+                this.vy = 0.5;
+                this.visible = true;
+                this.pixelSize = 3;
+                
+                this.state = 'patrol';
+                this.stateTimer = 0;
+                this.cow = { x: 0, y: 0, active: false };
+                this.groundY = HEIGHT - 40;
+            }
+            
+            update() {
+                if (this.state === 'patrol') {
+                    this.x += this.vx;
+                    this.y += this.vy + Math.sin(Date.now() / 200) * 0.3;
+                    
+                    if (this.x < 60 || this.x > WIDTH - 60) this.vx *= -1;
+                    if (this.y < 50 || this.y > HEIGHT - 200) this.vy *= -1;
+                    
+                    this.stateTimer++;
+                    if (this.stateTimer > 60 && this.x > 120 && this.x < WIDTH - 120) {
+                        this.state = 'lock_on';
+                        this.stateTimer = 0;
+                        this.vx = 0;
+                        this.vy = 0;
+                        this.cow = { x: this.x, y: this.groundY, active: true };
+                    }
+                } else if (this.state === 'lock_on') {
+                    this.y += Math.sin(Date.now() / 200) * 0.4;
+                    this.stateTimer++;
+                    if (this.stateTimer > 80) {
+                        this.state = 'abduct';
+                    }
+                } else if (this.state === 'abduct') {
+                    this.y += Math.sin(Date.now() / 200) * 0.4;
+                    this.cow.y -= 1.5;
+                    if (this.cow.y < this.y + 10) {
+                        this.cow.active = false;
+                        this.state = 'finish';
+                        this.stateTimer = 0;
+                    }
+                } else if (this.state === 'finish') {
+                    this.y += Math.sin(Date.now() / 200) * 0.4;
+                    this.stateTimer++;
+                    if (this.stateTimer > 40) {
+                        this.state = 'patrol';
+                        this.stateTimer = 0;
+                        this.vx = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random());
+                        this.vy = (Math.random() > 0.5 ? 1 : -1) * (0.5 + Math.random());
+                    }
+                }
+            }
+            
+            draw() {
+                if (!this.visible) return;
+                this.drawBeam();
+                this.drawCow();
+                this.drawShip();
+            }
+            
+            drawBeam() {
+                if (this.state !== 'lock_on' && this.state !== 'abduct') return;
+                
+                const maxBeamLength = this.groundY - this.y;
+                let currentLength = maxBeamLength;
+                
+                if (this.state === 'lock_on') {
+                    currentLength = maxBeamLength * (this.stateTimer / 80);
+                }
+                
+                const steps = Math.floor(currentLength / this.pixelSize);
+                const topWidth = 8;
+                const bottomWidth = 36;
+                const alpha = 0.2 + Math.sin(Date.now() / 50) * 0.1;
+                
+                ctx.fillStyle = `rgba(139, 0, 0, ${alpha})`;
+                
+                for (let i = 0; i < steps; i++) {
+                    const progress = i / (maxBeamLength / this.pixelSize);
+                    const w = topWidth + (bottomWidth - topWidth) * progress;
+                    const by = this.y + 10 + i * this.pixelSize;
+                    ctx.fillRect(this.x - w/2, by, w, this.pixelSize);
+                }
+            }
+            
+            drawCow() {
+                if (!this.cow.active) return;
+                
+                const cx = this.cow.x;
+                const cy = this.cow.y;
+                const s = this.pixelSize;
+                
+                // Body
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(cx - 4*s, cy - 2*s, 8*s, 4*s);
+                ctx.fillRect(cx - 5*s, cy - 4*s, 3*s, 3*s); // Head
+                ctx.fillRect(cx + 4*s, cy - 1*s, 1*s, 2*s); // Tail
+                
+                // Spots
+                ctx.fillStyle = '#1a1714';
+                ctx.fillRect(cx - 2*s, cy - 2*s, 2*s, 2*s);
+                ctx.fillRect(cx + 1*s, cy - 1*s, 2*s, 2*s);
+                ctx.fillRect(cx - 4*s, cy - 3*s, 1*s, 1*s); // Eye
+                
+                // Udder
+                ctx.fillStyle = '#cc8888';
+                ctx.fillRect(cx + 0*s, cy + 2*s, 2*s, 1*s);
+                
+                // Legs (wiggling during abduction)
+                const wiggle = (this.state === 'abduct' && Math.floor(Date.now() / 100) % 2 === 0) ? s : 0;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(cx - 3*s, cy + 2*s + wiggle, 1*s, 2*s);
+                ctx.fillRect(cx - 1*s, cy + 2*s - wiggle, 1*s, 2*s);
+                ctx.fillRect(cx + 1*s, cy + 2*s + wiggle, 1*s, 2*s);
+                ctx.fillRect(cx + 3*s, cy + 2*s - wiggle, 1*s, 2*s);
+                
+                // Hooves
+                ctx.fillStyle = '#1a1714';
+                ctx.fillRect(cx - 3*s, cy + 4*s + wiggle, 1*s, 1*s);
+                ctx.fillRect(cx - 1*s, cy + 4*s - wiggle, 1*s, 1*s);
+                ctx.fillRect(cx + 1*s, cy + 4*s + wiggle, 1*s, 1*s);
+                ctx.fillRect(cx + 3*s, cy + 4*s - wiggle, 1*s, 1*s);
+            }
+            
+            drawShip() {
+                const s = this.pixelSize;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                
+                // Glass Dome
+                ctx.fillStyle = '#a8a39d';
+                ctx.fillRect(-3*s, -4*s, 6*s, 1*s);
+                ctx.fillRect(-4*s, -3*s, 8*s, 3*s);
+                ctx.fillStyle = '#c5c0ba';
+                ctx.fillRect(-2*s, -3*s, 2*s, 1*s);
+                
+                // Ship Body
+                ctx.fillStyle = '#4a3f35';
+                ctx.fillRect(-6*s, 0*s, 12*s, 1*s);
+                ctx.fillRect(-8*s, 1*s, 16*s, 1*s);
+                ctx.fillRect(-9*s, 2*s, 18*s, 1*s);
+                ctx.fillRect(-7*s, 3*s, 14*s, 1*s);
+                ctx.fillRect(-4*s, 4*s, 8*s, 1*s);
+                
+                // Lights
+                const t = Date.now();
+                ctx.fillStyle = (t % 500 < 250) ? '#8B0000' : '#006400';
+                ctx.fillRect(-7*s, 2*s, 2*s, 1*s);
+                ctx.fillStyle = (t % 500 > 250) ? '#8B0000' : '#006400';
+                ctx.fillRect(5*s, 2*s, 2*s, 1*s);
+                ctx.fillStyle = '#f5f0e8';
+                ctx.fillRect(-1*s, 3*s, 2*s, 1*s);
+                
+                ctx.restore();
+            }
+        }
+        
+        let ufo = null;
+        
+        let mouseX = WIDTH / 2;
+        let mouseY = HEIGHT / 2;
+        
+        function init() {
+            initMatrix();
+            ufo = new PixelUFO();
+            
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+            });
+            
+            animate();
+        }
+        
+        function animate() {
+            ctx.fillStyle = '#f5f0e8';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+            
+            drawMatrix();
+            
+            if (ufo && ufo.visible) {
+                ufo.update();
+                ufo.draw();
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>

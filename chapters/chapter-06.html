@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06. 客製化主題與 pixel 復古風格 • R Vibe Coding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        
+        :root {
+            --bg: #f5f0e8;
+            --text: #1a1714;
+            --accent: #8B0000;
+            --border: #4a3f35;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: var(--bg);
+            border-bottom: 3px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            background: #fff;
+            border: 3px solid var(--border);
+            padding: 28px;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #8B0000;
+            padding: 16px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">R VIBE CODING</div>
+    </div>
+    
+    <div class="container">
+        <h1>06. 客製化主題與 pixel 復古風格</h1>
+        
+        <div class="section">
+            <h2>theme() 的常用參數</h2>
+            <p><code>theme()</code> 可以控制圖表的各種視覺元素：</p>
+            <ul style="margin:16px 0 0 24px; line-height:1.9;">
+                <li><code>plot.background</code>：圖表背景</li>
+                <li><code>panel.background</code>：繪圖區背景</li>
+                <li><code>panel.grid</code>：格線</li>
+                <li><code>axis.text</code>：軸文字</li>
+                <li><code>axis.title</code>：軸標題</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>R 實際輸出</h2>
+            <p>下面這張圖展示了如何做出米色 + 黑色 pixel 風格的主題：</p>
+            
+            <div style="background:#fff; border:3px solid var(--border); padding:20px; margin:20px 0; text-align:center;">
+                <img src="../assets/chapter06_theme_demo.png" alt="R ggplot2 theme demo" style="max-width:100%; border:2px solid #333;">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>常見錯誤</h2>
+            
+            <div class="warning">
+                <strong>1. 直接使用預設主題</strong><br>
+                ggplot2 的預設主題是灰色背景，不適合 pixel 復古風格。
+            </div>
+            
+            <div class="warning">
+                <strong>2. 忽略字體選擇</strong><br>
+                預設字體可能不適合 pixel 風格，建議使用 <code>Press Start 2P</code> 或 <code>VT323</code>。
+            </div>
+            
+            <div class="warning">
+                <strong>3. 格線太粗或太細</strong><br>
+                格線應該是輔助線，不要搶走資料的風頭。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>練習題</h2>
+            <ol style="line-height:2.2; margin-left:20px;">
+                <li>用 <code>theme()</code> 做出一個「米色背景 + 黑色格線」的 pixel 風格主題。</li>
+                <li>找一張你覺得「主題不適合」的圖，解釋原因。</li>
+                <li>設計一個「適合列印」的黑白主題。</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>R 程式碼下載</h2>
+            <a href="../assets/chapter06_code.R" download style="display:inline-block; background:#8B0000; color:#f5f0e8; padding:12px 24px; text-decoration:none; border:3px solid #1a1714; font-size:18px;">
+                下載 chapter06_code.R
+            </a>
+        </div>
+        
+        <div style="text-align:center; margin-top:50px; color:#888;">
+            <p>下一章：多圖層與統計轉換</p>
+            <p style="margin-top:12px;">
+                <a href="chapter-07.html" style="color:#8B0000; text-decoration:none;">繼續閱讀 →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
