@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>01. 視覺通道 • R Vibe Coding</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=VT323&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
         
         :root {
             --bg: #f5f0e8;
@@ -120,10 +120,10 @@
             <p>點擊不同視覺通道來看呈現效果：</p>
             
             <div style="margin:20px 0;">
-                <button class="channel-btn active" onclick="showChannel('position')">位置</button>
-                <button class="channel-btn" onclick="showChannel('size')">大小</button>
-                <button class="channel-btn" onclick="showChannel('color')">顏色</button>
-                <button class="channel-btn" onclick="showChannel('shape')">形狀</button>
+                <button class="channel-btn active" onclick="showChannel(event, 'position')">位置</button>
+                <button class="channel-btn" onclick="showChannel(event, 'size')">大小</button>
+                <button class="channel-btn" onclick="showChannel(event, 'color')">顏色</button>
+                <button class="channel-btn" onclick="showChannel(event, 'shape')">形狀</button>
             </div>
             
             <div class="demo-area" id="demo-area">
@@ -192,7 +192,7 @@
             {name: '巴西', value: 2150}
         ];
         
-        function showChannel(type) {
+        function showChannel(event, type) {
             document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             
@@ -248,8 +248,6 @@
             });
         }
     </script>
-</body>
-</html>
     <!-- Vibe Coding 對話練習區 -->
     <div class="section" style="margin-top: 40px;">
         <h2>Vibe Coding 對話練習</h2>
